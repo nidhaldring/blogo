@@ -5,11 +5,13 @@ from flask import session
 from models.user import User,UserNotRegistredException
 
 
+currentUser = None
 
-# add support for remember me feature later 
-currentUser = None 
+def getCurrentUser():
+	return currentUser
 
 
+# add support for remember me feature later
 def loginUser(user):
 	if not user.id:
 		raise UserNotRegistredException()

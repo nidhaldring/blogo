@@ -3,7 +3,7 @@ from flask import (request,render_template,redirect,url_for)
 
 from auth import bp
 from models.user import User
-from utils.loginManager import loginUser,currentUser
+from utils.loginManager import loginUser,getCurrentUser
 
 
 
@@ -28,7 +28,8 @@ def register():
 # TODO: delete this later
 @bp.route("/")
 def index():
-	return str(currentUser)
+
+	return str(getCurrentUser())
 
 
 
