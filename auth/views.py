@@ -26,7 +26,6 @@ def register():
 
 
 # TODO: delete this later
-# test
 @bp.route("/")
 def index():
 	return str(currentUser)
