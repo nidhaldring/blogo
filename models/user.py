@@ -39,9 +39,11 @@ class User:
 		conn.commit()
 		conn.close()
 
-		# set id to the current value on the table 
+		# fetch the current user from db 
+		# and set the id  
 		# so delete op can be possible from now on
-		self.id = int(self.searchByEmail(self.email).id)
+		currentUser = self.query(dict(email=self.email))[0]
+		self.id = int(currentUser.id)
 
 	def delete(self):
 
@@ -59,31 +61,20 @@ class User:
 		conn.close()
 
 
-
 	@classmethod
-	def _searchByAttribute(cls,name,value):
+	def query(cls,cond:dict) -> list:
 
+		cond = " and ".join(["{} = '{}' ".format(i,j) for i,j in cond.items()])
+		sql = f"select * from {cls.TABLE} where " + cond
 		conn = pymysql.connect(**cls.DB)
 		cursor = conn.cursor()
-		sql = f"select * from {cls.TABLE} where {name}=%s"
 
-		cursor.execute(sql,(value,))
-		res = cursor.fetchone()
+		cursor.execute(sql)
+		res = cursor.fetchall()
 
-		cursor.close()
 		conn.close()
 
-		return cls(res[1],res[2],res[3],res[0]) if res else None
-#               userusername ,password ,email,id
-
-
-	@classmethod
-	def searchByEmail(cls,email):
-		return cls._searchByAttribute("email",email)
-
-	@classmethod
-	def searchByID(cls,id_):
-		return cls._searchByAttribute("id",id_)
+		return [cls(row[1],row[2],row[3],row[0]) for row in res] 
 
 
 	# for debugging purposes
