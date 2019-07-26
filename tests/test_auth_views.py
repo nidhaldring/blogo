@@ -2,7 +2,7 @@
 
 import unittest
 
-from flask import request
+from flask import request,session
 from createApp import createApp
 from config import TestingConfig
 
@@ -29,7 +29,7 @@ class TestAuthViews(unittest.TestCase):
 			self.assertEqual(200,resp.status_code)
 			self.assertEqual(index_,request.endpoint)
 			self.assertTrue("_user_id" in session)
-			
+
 	'''
 	def test_login_lougout_views(self):
 
