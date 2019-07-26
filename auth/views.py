@@ -1,5 +1,5 @@
 
-from flask import (request,render_template,redirect,url_for)
+from flask import (request,render_template,redirect,url_for,flash)
 
 from auth import bp
 from models.user import User
@@ -28,7 +28,20 @@ def register():
 def login():
 
 	if request.method == "POST":
-		pass
+			
+		username = request.form["username"]
+		password = request.form["password"]
+		res = User.query({"username":username,"password":password})
+		u = res[0]
+
+		if not u:
+			flash("incorrect login !")
+			return redirect(url_for("auth.index"))
+		
+		loginUser(u)
+		flash(f"welcome {u.username} !")
+		return redirect(url_for("auth.index"))
+
 
 	return render_template("auth/login.html")
 
