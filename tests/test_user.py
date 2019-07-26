@@ -30,15 +30,15 @@ class TestUser(unittest.TestCase):
 		self.assertRaises(UserNotRegistredException,u.delete)
 
 		u.register()
-		u = User.searchByEmail("g@g.com")
+		u = User.query({"email":"g@g.com"})[0]
 
-		self.assertIsNotNone(u)
+		self.assertNotEqual(u,[])
 		self.assertEqual(u.username,"n")
 		self.assertEqual(u.password,"n")
 		self.assertEqual(u.email,"g@g.com")
 
 		u.delete()
-		self.assertIsNone(User.searchByEmail("x"))
+		self.assertEqual(User.query(dict(email="x")),[])
 
 
 
