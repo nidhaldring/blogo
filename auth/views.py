@@ -3,7 +3,7 @@ from flask import (request,render_template,redirect,url_for)
 
 from auth import bp
 from models.user import User
-from utils.loginManager import loginUser,getCurrentUser
+from utils.loginManager import loginUser,getCurrentUser,logoutUser
 
 
 
@@ -24,11 +24,24 @@ def register():
 	return render_template("auth/register.html")
 
 
+@bp.route("/login",methods=["POST","GET"])
+def login():
+
+	if request.method == "POST":
+		pass
+
+	return render_template("auth/login.html")
+
+@bp.route("/logout")
+def logout():
+
+	logoutUser()
+	return redirect(url_for("auth.index"))
+
 
 # TODO: delete this later
 @bp.route("/")
 def index():
-
 	return str(getCurrentUser())
 
 
