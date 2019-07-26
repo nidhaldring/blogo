@@ -10,6 +10,11 @@ from utils.loginManager import loginUser,getCurrentUser,logoutUser
 @bp.route("/register",methods=["POST","GET"])
 def register():
 
+	if getCurrentUser() is not None:
+
+		flash("You're already registred !")
+		return redirect(url_for("auth.index"))
+
 	if request.method == "POST":
 
 		u = User(request.form["username"],
@@ -24,8 +29,15 @@ def register():
 	return render_template("auth/register.html")
 
 
+
+
 @bp.route("/login",methods=["POST","GET"])
 def login():
+
+	if getCurrentUser() is not None:
+
+		flash("You're already logged in !")
+		return redirect(url_for("auth.index"))
 
 	if request.method == "POST":
 			
@@ -44,6 +56,8 @@ def login():
 
 
 	return render_template("auth/login.html")
+
+
 
 @bp.route("/logout")
 def logout():
