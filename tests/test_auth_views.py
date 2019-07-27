@@ -31,7 +31,17 @@ class TestAuthViews(unittest.TestCase):
 			self.assertTrue("_user_id" in session)
 
 
-	def test_b_login_view(self):
+	def test_b_logout_view(self):
+
+		with self.app.test_client() as client:
+
+			resp = client.get("/auth/logout",follow_redirects=True)
+			self.assertEqual(index_,request.endpoint)
+			self.assertEqual(200,resp.status_code)
+			self.assertTrue("_user_id" not in session)
+
+
+	def test_c_login_view(self):
 
 		with self.app.test_client() as client:
 
@@ -48,13 +58,8 @@ class TestAuthViews(unittest.TestCase):
 			self.assertEqual(request.endpoint,index_)
 			self.assertTrue("_user_id" in session)
 
-	def test_c_logout_view(self):
+			resp = client.get("/auth/login",follow_redirects=True)
+			self.assertTrue(request.endpoint,index_)
 
-		with self.app.test_client() as client:
-
-			resp = client.get("/auth/logout",follow_redirects=True)
-			self.assertEqual(index_,request.endpoint)
-			self.assertEqual(200,resp.status_code)
-			self.assertTrue("_user_id" not in session)
 
 
