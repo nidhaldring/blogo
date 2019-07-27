@@ -3,7 +3,7 @@ from flask import (request,render_template,redirect,url_for,flash)
 
 from auth import bp
 from models.user import User
-from utils.loginManager import loginUser,getCurrentUser,logoutUser
+from utils.loginManager import loginUser,getCurrentUser,logoutUser,loginRequired
 
 
 

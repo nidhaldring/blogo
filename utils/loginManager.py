@@ -1,6 +1,7 @@
 
+from functools import wraps
 
-from flask import session
+from flask import session,current_app,redirect,url_for,abort
 
 from models.user import User,UserNotRegistredException
 
@@ -29,3 +30,19 @@ def logoutUser():
 
 	global currentUser
 	currentUser = None
+
+
+
+def loginRequired(view):
+	
+	@wraps(view)
+	def decorator(*args,**kargs):
+		if getCurrentUser() is None:
+			redirectUrl = current_app.config.get("REDIRECT_URL",None)
+			if redirectUrl:
+				return redirect(url_for(redirectUrl))
+
+			abort(401) # unathorized
+
+		return view(*args,**kargs)
+	return decorator
