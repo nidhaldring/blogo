@@ -48,7 +48,7 @@ def login():
 		res = User.query({"email":email})
 		u = res[0] if res else None
 
-		if not u and not check_password_hash(u.password,password):
+		if not u or not check_password_hash(u.password,password):
 			flash("incorrect login !")
 			return redirect(url_for("auth.index"))
 		
