@@ -35,20 +35,19 @@ class TestUser(unittest.TestCase):
 		# assert registration
 		self.assertNotEqual(u,[])
 
-		# assert a unique email per user
-		self.assertEqual(len(u),1) 
-
 		# assert data is retreived correctly
 		u = u[0]
 		self.assertEqual(u.username,"n")
 		self.assertTrue(check_password_hash(u.password,"n"))		
 		self.assertEqual(u.email,"g@g.com")
 
-		# assert register method works only one time
+		# assert register method works only on unregistred users
 		self.assertRaises(UserAlreadyRegistredException,u.register)
 
+		# assert no duplicate emails are allowed on registration
 		self.assertRaises(EmailAlreadyExistsException,User("n","n","g@g.com").register)
 
+		# assert deletion 
 		u.delete()
 		self.assertEqual(User.query({"email":"g@g.com"}),[])
 
