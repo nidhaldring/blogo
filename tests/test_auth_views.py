@@ -33,6 +33,10 @@ class TestAuthViews(unittest.TestCase):
 			self.assertEqual(index_,request.endpoint)
 			self.assertTrue("_user_id" in session)
 
+			# test for duplicated email
+			resp = client.post("/auth/register",data=self.userData,follow_redirects=True)
+			self.assertEqual(index_,request.endpoint)
+
 
 	def test_b_logout_view(self):
 
