@@ -51,6 +51,26 @@ class TestUser(unittest.TestCase):
 		u.delete()
 		self.assertEqual(User.query({"email":"g@g.com"}),[])
 
+	def test_update(self):
 
+		u = User("a","a","a@g.com")
+
+		newData = {"email":"ff@ff.com"}
+
+		# assert update only works on registred users
+		f = lambda : u.update(newData)
+		self.assertRaises(UserNotRegistredException,f)
+
+		u.register().update(newData)
+
+		# assert values are updated
+		for key,v in newData.entities():
+			self.assertEqual(getattr(key,u),v)
+
+		# assert no duplicate emails
+		u = User("a","a","f@f.com").register()
+		f = lambda : u.update(newData)
+		self .assertRaises(EmailAlreadyExistsException,f)
+		
 
 
