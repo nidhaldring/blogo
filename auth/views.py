@@ -3,12 +3,11 @@ from flask import (request,render_template,redirect,url_for,flash)
 from werkzeug import check_password_hash
 
 from auth import bp
-from models.user import User
+from models.user import User,EmailAlreadyExistsException
 from utils.loginManager import loginUser,getCurrentUser,logoutUser,loginRequired
 
 
 
-# duplicated email should be stopped
 @bp.route("/register",methods=["POST","GET"])
 def register():
 
@@ -23,7 +22,13 @@ def register():
 			request.form["password"],
 			request.form["email"]
 			)
-		u.register()
+
+		try:
+			u.register()
+		except EmailAlreadyExistsException as e:
+			flash(e.message)
+			return redirect(url_for("auth.index"))
+			
 		loginUser(u)
 
 		return redirect(url_for("auth.index"))
