@@ -56,7 +56,6 @@ def login():
 		flash(f"welcome {u.username} !")
 		return redirect(url_for("auth.index"))
 
-
 	return render_template("auth/login.html")
 
 
