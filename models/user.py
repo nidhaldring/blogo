@@ -31,6 +31,7 @@ class User:
 	DB = dict(db=Config.DB_NAME,user="root",password="root",host="localhost")
 	TABLE = "users"
 
+	# id_ should only be set internally
 	def __init__(self,username,password,email,id_=None):
 
 		self._id = id_
@@ -43,7 +44,10 @@ class User:
 	def id(self):
 		return self._id
 	
-
+	@id.setter
+	def id(self,v):
+		raise AttributeError("can't set id !")
+	
 	@classmethod
 	def _executeSQL(cls,sql):
 
