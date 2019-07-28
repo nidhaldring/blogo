@@ -1,5 +1,6 @@
 
 from flask import (request,render_template,redirect,url_for,flash)
+from werkzeug import check_password_hash
 
 from auth import bp
 from models.user import User
@@ -7,12 +8,13 @@ from utils.loginManager import loginUser,getCurrentUser,logoutUser,loginRequired
 
 
 
+# duplicated email should be stopped
 @bp.route("/register",methods=["POST","GET"])
 def register():
 
 	if getCurrentUser() is not None:
 
-		flash("You're already registred !")
+		flash("You're already registred !")	
 		return redirect(url_for("auth.index"))
 
 	if request.method == "POST":
@@ -41,12 +43,12 @@ def login():
 
 	if request.method == "POST":
 			
-		username = request.form["username"]
+		email = request.form["email"]
 		password = request.form["password"]
-		res = User.query({"username":username,"password":password})
-		u = res[0]
+		res = User.query({"email":email})
+		u = res[0] if res else None
 
-		if not u:
+		if not u and not check_password_hash(u.password,password):
 			flash("incorrect login !")
 			return redirect(url_for("auth.index"))
 		
@@ -70,16 +72,3 @@ def logout():
 @bp.route("/")
 def index():
 	return str(getCurrentUser())
-
-
-
-
-
-
-
-
-
-
-
-
-
