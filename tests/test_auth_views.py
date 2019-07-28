@@ -52,7 +52,7 @@ class TestAuthViews(unittest.TestCase):
 			self.assertEqual(resp.status_code,200)
 
 			resp = client.post("/auth/login",data=dict(
-					username=self.userData["username"],
+					email=self.userData["email"],
 					password=self.userData["password"]
 				),
 				follow_redirects=True
@@ -64,5 +64,6 @@ class TestAuthViews(unittest.TestCase):
 			resp = client.get("/auth/login",follow_redirects=True)
 			self.assertTrue(request.endpoint,index_)
 
+			# test with a non existent user 
 
 
