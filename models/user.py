@@ -44,25 +44,49 @@ class User:
 		return self._id
 	
 
+	@classmethod
+	def _executeSQL(cls,sql):
+
+		'''
+		executes the given sql
+		returning the result or none if none
+		'''
+
+		conn = pymysql.connect(**cls.DB)
+		cursor = conn.cursor()
+
+		cursor.execute(sql)
+		res = cursor.fetchall()
+
+		conn.commit()
+		conn.close()
+
+		return res
+
+	@classmethod
+	def query(cls,cond:dict) -> list:
+
+		cond = " and ".join(["{} = '{}' ".format(i,j) for i,j in cond.items()])
+		sql = f"select * from {cls.TABLE} where " + cond
+		res = cls._executeSQL(sql)
+
+		return [cls(row[1],row[2],row[3],row[0]) for row in res] 
+
 	def register(self):
 
 		if self._id is not None:
 			raise UserAlreadyRegistredException()
 
-		conn = pymysql.connect(**self.DB)
-		sql = f"insert into {self.TABLE}(username,password,email) values(%s,%s,%s)"
-		args = (self.username,generate_password_hash(self.password),self.email)
-		cursor = conn.cursor()
-
+		sql = (f"insert into {self.TABLE}(username,password,email)" 
+			+ f" values('{self.username}'," 
+			+ f"'{generate_password_hash(self.password)}','{self.email}');")
+	
 		try:
-			cursor.execute(sql,args)
+			self._executeSQL(sql)
 		except pymysql.err.IntegrityError as e:
 			if e.args[0] == 1062:
 				raise EmailAlreadyExistsException()
 			raise e
-
-		conn.commit()
-		conn.close()
 
 		# fetch the current user from db 
 		# and set the id  
@@ -77,33 +101,12 @@ class User:
 		if self._id is None:	
 			raise UserNotRegistredException() 
 
-		conn = pymysql.connect(**self.DB)
-		sql = f"delete from {self.TABLE} where id=%s"
-		cursor = conn.cursor()
-
-		cursor.execute(sql,(self._id,))
-
-		conn.commit()
-		conn.close()
+		sql = f"delete from {self.TABLE} where id='{self._id}'"
+		self._executeSQL(sql)
 
 		self._id = None
 
 		return self
-
-	@classmethod
-	def query(cls,cond:dict) -> list:
-
-		cond = " and ".join(["{} = '{}' ".format(i,j) for i,j in cond.items()])
-		sql = f"select * from {cls.TABLE} where " + cond
-		conn = pymysql.connect(**cls.DB)
-		cursor = conn.cursor()
-
-		cursor.execute(sql)
-		res = cursor.fetchall()
-
-		conn.close()
-
-		return [cls(row[1],row[2],row[3],row[0]) for row in res] 
 
 
 	# for debugging purposes
