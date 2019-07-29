@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash
 import pymysql
 
 from config import Config 
-from models.utils import executeSQL
+from models.utils import executeSQL,query
 from models.exceptions import UserAlreadyRegistredException,UserNotRegistredException,EmailAlreadyExistsException
 					
 
@@ -37,10 +37,7 @@ class User:
 	@classmethod
 	def query(cls,cond:dict) -> list:
 
-		cond = " and ".join(["{} = '{}' ".format(i,j) for i,j in cond.items()])
-		sql = f"select * from {cls.TABLE} where " + cond
-		res = executeSQL(sql,cls.DB)
-
+		res = query(cls.DB,cls.TABLE,cond)
 		return [cls(row[1],row[2],row[3],row[0]) for row in res] 
 
 	def register(self):
