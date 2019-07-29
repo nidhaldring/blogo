@@ -4,10 +4,10 @@ import pymysql
 
 from config import Config 
 from models.utils import executeSQL
-from models.exceptions import (UserAlreadyRegistredException
-						,UserNotRegistredException
-						,EmailAlreadyExistsException
-						)
+from models.exceptions import (UserAlreadyRegistredException,
+						UserNotRegistredException,
+						EmailAlreadyExistsException,
+					)
 
 class User:
 
@@ -83,9 +83,31 @@ class User:
 
 	def update(self,newData):
 
-		
+		'''
+		returns the new updated user
+		dosn't change the user in place !
+		'''
 
-		return self
+		if self.id is None:
+			raise UserNotRegistredException()
+
+		# update the current object
+		self.__dict__.update(newData)
+
+		#update db
+		sql = f"update {self.TABLE} set "
+		sql +=  " , ".join(["{} = '{}' ".format(i,j) for i,j in newData.items()])
+		sql += f"where id = {self.id}"
+
+		try:
+			executeSQL(sql,self.DB)
+		except pymysql.err.IntegrityError as e:
+			if e.args[0] == 1062:
+				raise EmailAlreadyExistsException()
+			raise e
+
+
+		return self	
 
 
 	# for debugging purposes
