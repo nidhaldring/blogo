@@ -4,7 +4,7 @@ from werkzeug import check_password_hash
 
 from auth import bp
 from models.user import User,EmailAlreadyExistsException
-from utils.loginManager import loginUser,getCurrentUser,logoutUser,loginRequired
+from auth.utils import loginUser,getCurrentUser,logoutUser,loginRequired
 
 
 
