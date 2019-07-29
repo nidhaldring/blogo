@@ -19,3 +19,12 @@ def executeSQL(sql,dbCon:dict):
 	conn.close()
 
 	return res
+
+
+def query(dbCon,table,cond:dict) -> list:
+
+	cond = " and ".join(["{} = '{}' ".format(i,j) for i,j in cond.items()])
+	sql = f"select * from {table} where " + cond
+	res = executeSQL(sql,dbCon)
+
+	return res
