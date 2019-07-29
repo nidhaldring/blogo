@@ -63,8 +63,8 @@ class TestUser(unittest.TestCase):
 
 		# assert values are updated
 		u.register().update(newData)
-		for key,v in newData.entities():
-			self.assertEqual(getattr(key,u),v)
+		for key,v in newData.items():
+			self.assertEqual(getattr(u,key),v)
 
 		# assert no duplicate emails are allowed on update
 		u = User("a","a","f@f.com").register()
