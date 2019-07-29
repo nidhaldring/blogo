@@ -4,24 +4,10 @@ import pymysql
 
 from config import Config 
 from models.utils import executeSQL
-
-
-# exceptions
-
-class UserAlreadyRegistredException(Exception):
-	def __init__(self):
-		self.message = "The user is already registred !"
-
-class UserNotRegistredException(Exception):
-	def __init__(self):
-		self.message = "The user is not yet registered on the db"
-
-class EmailAlreadyExistsException(Exception):
-	def __init__(self):
-		self.manage = "This email is already in use !"
-
-#
-
+from models.exceptions import (UserAlreadyRegistredException
+						,UserNotRegistredException
+						,EmailAlreadyExistsException
+						)
 
 class User:
 
