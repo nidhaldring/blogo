@@ -4,7 +4,7 @@ import pymysql
 
 from config import Config 
 from models.utils import executeSQL
-from models.exceptions import UserAlreadyRegistredException,UserNotRegistredException,EmailAlreadyExistsException,
+from models.exceptions import UserAlreadyRegistredException,UserNotRegistredException,EmailAlreadyExistsException
 					
 
 class User:
