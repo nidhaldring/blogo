@@ -1,8 +1,9 @@
 
-import pymysql
 from werkzeug.security import generate_password_hash
+import pymysql
 
 from config import Config 
+from models.utils import executeSQL
 
 
 # exceptions
@@ -48,31 +49,13 @@ class User:
 	def id(self,v):
 		raise AttributeError("can't set id !")
 	
-	@classmethod
-	def _executeSQL(cls,sql):
-
-		'''
-		executes the given sql
-		returning the result or none if none
-		'''
-
-		conn = pymysql.connect(**cls.DB)
-		cursor = conn.cursor()
-
-		cursor.execute(sql)
-		res = cursor.fetchall()
-
-		conn.commit()
-		conn.close()
-
-		return res
 
 	@classmethod
 	def query(cls,cond:dict) -> list:
 
 		cond = " and ".join(["{} = '{}' ".format(i,j) for i,j in cond.items()])
 		sql = f"select * from {cls.TABLE} where " + cond
-		res = cls._executeSQL(sql)
+		res = executeSQL(sql,cls.DB)
 
 		return [cls(row[1],row[2],row[3],row[0]) for row in res] 
 
@@ -86,7 +69,7 @@ class User:
 			+ f"'{generate_password_hash(self.password)}','{self.email}');")
 	
 		try:
-			self._executeSQL(sql)
+			executeSQL(sql,self.DB)
 		except pymysql.err.IntegrityError as e:
 			if e.args[0] == 1062:
 				raise EmailAlreadyExistsException()
@@ -106,7 +89,7 @@ class User:
 			raise UserNotRegistredException() 
 
 		sql = f"delete from {self.TABLE} where id='{self._id}'"
-		self._executeSQL(sql)
+		executeSQL(sql,self.DB)
 
 		self._id = None
 
