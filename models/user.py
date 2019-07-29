@@ -112,6 +112,12 @@ class User:
 
 		return self
 
+	def update(self,newData):
+
+		
+
+		return self
+
 
 	# for debugging purposes
 	def __str__(self):
