@@ -66,7 +66,7 @@ class TestUser(unittest.TestCase):
 		for key,v in newData.entities():
 			self.assertEqual(getattr(key,u),v)
 
-		# assert no duplicate emails
+		# assert no duplicate emails are allowed on update
 		u = User("a","a","f@f.com").register()
 		f = lambda : u.update(newData)
 		self .assertRaises(EmailAlreadyExistsException,f)
