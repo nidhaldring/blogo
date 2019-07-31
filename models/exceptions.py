@@ -1,5 +1,9 @@
 
+# exceptions for model
 
+class ModelAlreadyInsertedException(Exception):pass
+
+class ModelNotInsertedException(Exception):pass
 
 # exceptions for user class
 
