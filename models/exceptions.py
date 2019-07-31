@@ -19,5 +19,13 @@ class EmailAlreadyExistsException(Exception):
 	def __init__(self):
 		self.manage = "This email is already in use !"
 
-#
+# exceptions fro post clas
+
+class PostAlreadyInsertedException(Exception):
+	def __init__(self):
+		self.message = "This post is already inserted on the db !"
+
+class PostNotInsertedException(Exception):
+	def __init__(self):
+		self.message = "This post is not inserted on the db !"
 
