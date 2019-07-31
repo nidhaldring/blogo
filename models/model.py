@@ -76,6 +76,9 @@ class Model:
 
 		return self.data[key]
 
+	def __eq__(self,other):
+
+		return self.data == other.data and self.id == other.id
 
 
 
