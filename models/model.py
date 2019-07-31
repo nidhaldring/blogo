@@ -1,13 +1,11 @@
 
-from abc import ABC,abstractmethod
-
 import pymysql
 
 from models.utils import executeSQL
 from models.exceptions import ModelAlreadyInsertedException,ModelNotInsertedException
 
 
-class Model(ABC):
+class Model:
 
 	'''abstract class to map data to db'''
 	
@@ -40,7 +38,7 @@ class Model(ABC):
 		executeSQL(self.dbCon,sql)
 
 		# set the id
-		self._id = self.query({"email":self.email})[0].id
+		self._id = executeSQL(self.dbCon,f"select max(id) from {self.table};")[0][0]
 
 		return self
 
@@ -72,10 +70,6 @@ class Model(ABC):
 		executeSQL(self.dbCon,sql)
 
 		return self
-
-
-	@abstractmethod
-	def query(self,cond:dict):pass
 
 
 	def __getattr__(self,key):
