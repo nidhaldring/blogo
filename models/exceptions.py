@@ -7,25 +7,25 @@ class ModelNotInsertedException(Exception):pass
 
 # exceptions for user class
 
-class UserAlreadyRegistredException(Exception):
+class UserAlreadyRegistredException(ModelAlreadyInsertedException):
 	def __init__(self):
 		self.message = "The user is already registred !"
 
-class UserNotRegistredException(Exception):
+class UserNotRegistredException(ModelNotInsertedException):
 	def __init__(self):
 		self.message = "The user is not yet registered on the db"
 
 class EmailAlreadyExistsException(Exception):
 	def __init__(self):
-		self.manage = "This email is already in use !"
+		self.message = "This email is already in use !"
 
 # exceptions fro post clas
 
-class PostAlreadyInsertedException(Exception):
+class PostAlreadyInsertedException(ModelAlreadyInsertedException):
 	def __init__(self):
 		self.message = "This post is already inserted on the db !"
 
-class PostNotInsertedException(Exception):
+class PostNotInsertedException(ModelNotInsertedException):
 	def __init__(self):
 		self.message = "This post is not inserted on the db !"
 
