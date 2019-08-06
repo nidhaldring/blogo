@@ -1,46 +1,37 @@
 
 from werkzeug.security import generate_password_hash
-import pymysql
 
 from config import Config 
 from models.model import Model
-from models.utils import query
+from models.utils.dbManager import DbManager
+from models.utils.sqlQueryMaker import SQLQueryMaker
 from models.exceptions import *
 					
+
 
 class User(Model):
 
 	'''manages a user in db'''
 
-	DB_CON = dict(db=Config.DB_NAME,user="root",password="root",host="localhost")
-	TABLE = "users"
+	dbManager = DbManager()
+	queryMaker = SQLQueryMaker(table=Config.USERS_TABLE)
 
 	# id_ should only be set internally
 	def __init__(self,username,password,email,_id=None):
 
 		data = dict(username=username,password=password,email=email)
-		super().__init__(dbCon=self.DB_CON,table=self.TABLE,data=data,_id=_id)
+		super().__init__(data=data,_id=_id)
 	
-
-	@classmethod
-	def query(cls,cond:dict) -> list:
-
-		res = query(cls.DB_CON,cls.TABLE,cond)
-		return [cls(row[1],row[2],row[3],row[0]) for row in res] 
-
 
 	def register(self):
 
 		try:
 			self.data["password"] = generate_password_hash(self.password)
 			return super().insert()
-		except pymysql.err.IntegrityError as e:
-			if e.args[0] == 1062:
+		except ModelUniqueConstraintException:			
 				raise EmailAlreadyExistsException()
-			raise e
 		except ModelAlreadyInsertedException:
 			raise UserAlreadyRegistredException()
-
 
 	def delete(self):
 
@@ -57,13 +48,27 @@ class User(Model):
 		
 		try:
 			return super().update(newData)
-		except pymysql.err.IntegrityError as e:
-			if e.args[0] == 1062:
-				raise EmailAlreadyExistsException()
-			raise e
+		except ModelUniqueConstraintException:
+			raise EmailAlreadyExistsException()
 		except ModelNotInsertedException:
 			raise UserNotRegistredException()
 
+
+	@classmethod
+	def query(cls,cond:dict) -> list:
+
+		sql = cls.queryMaker.makeSearchQuery(cond)
+		res = cls.dbManager.execute(sql)
+
+		return [
+				cls(
+					row[1],
+					row[2],
+					row[3],
+					_id=row[0]
+				)
+			for row in res
+		] 
 
 	# for debugging purposes
 	def __repr__(self):
