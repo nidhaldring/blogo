@@ -1,19 +1,17 @@
 
 import pymysql
 
-from models.utils import executeSQL
-from models.exceptions import ModelAlreadyInsertedException,ModelNotInsertedException
-
+from models.exceptions import ModelAlreadyInsertedException,ModelNotInsertedException,ModelUniqueConstraintException
 
 class Model:
 
-	'''abstract class to map data to db'''
-	
-	def __init__(self,dbCon:dict,table,data:dict,_id=None):
+	'''base class for all models'''
 
+	dbManager = None 
+	queryMaker = None
+		
+	def __init__(self,data:dict,_id=None):
 
-		self.dbCon = dbCon
-		self.table = table
 		self.data = data 
 		self._id = _id
 
@@ -31,14 +29,15 @@ class Model:
 		if self._id is not None:
 			raise ModelAlreadyInsertedException()
 
-		sql = f"insert into {self.table}"
-		sql += "(" + " , ".join(self.data.keys()) +")"
-		sql += " values(" + " , ".join([f"'{i}'" for i in self.data.values()]) + ")"
+		sql = self.queryMaker.makeInsertQuery()
 
-		executeSQL(self.dbCon,sql)
-
+		try:
+			self.dbManager.execute(sql)
+		except pymysql.err.IntegrityError as e:
+			if e.args[0] == 1062:
+				raise ModelUniqueConstraintException()
 		# set the id
-		self._id = executeSQL(self.dbCon,f"select max(id) from {self.table};")[0][0]
+		self._id = self.dbManager.execute(f"select max(id) from {self.queryMaker.table};")[0][0]
 
 		return self
 
@@ -47,9 +46,8 @@ class Model:
 		if self._id is None:
 			raise ModelNotInsertedException()
 
-		sql = f"delete from {self.table} where  id={self._id}"
-		executeSQL(self.dbCon,sql)
-
+		sql = self.queryMaker.makeDeleteQuery({"id":self.id})
+		self.dbManager.execute(sql)
 		self._id = None
 
 		return self
@@ -63,11 +61,13 @@ class Model:
 		# update the current object
 		self.__dict__.update(newData)
 
-		sql = f"update {self.table} set "
-		sql +=  " , ".join(["{} = '{}' ".format(i,j) for i,j in newData.items()])
-		sql += f"where id = {self._id}"
-
-		executeSQL(self.dbCon,sql)
+		sql = self.queryMaker.makeUpdateQuery(newData,{"id":self.id})
+		
+		try:
+			self.dbManager.execute(sql)
+		except pymysql.err.IntegrityError as e:
+			if e.args[0] == 1062:
+				raise ModelUniqueConstraintException()
 
 		return self
 
@@ -79,6 +79,3 @@ class Model:
 	def __eq__(self,other):
 
 		return self.data == other.data and self.id == other.id
-
-
-
