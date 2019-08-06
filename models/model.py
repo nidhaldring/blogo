@@ -1,5 +1,4 @@
 
-import pymysql
 
 from models.exceptions import ModelAlreadyInsertedException,ModelNotInsertedException,ModelUniqueConstraintException
 
