@@ -5,6 +5,8 @@ class ModelAlreadyInsertedException(Exception):pass
 
 class ModelNotInsertedException(Exception):pass
 
+class ModelUniqueConstraintException(Exception):pass
+
 # exceptions for user class
 
 class UserAlreadyRegistredException(ModelAlreadyInsertedException):
@@ -15,7 +17,7 @@ class UserNotRegistredException(ModelNotInsertedException):
 	def __init__(self):
 		self.message = "The user is not yet registered on the db"
 
-class EmailAlreadyExistsException(Exception):
+class EmailAlreadyExistsException(ModelUniqueConstraintException):
 	def __init__(self):
 		self.message = "This email is already in use !"
 
