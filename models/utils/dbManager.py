@@ -1,5 +1,4 @@
 
-from abc import ABC,abstractmethod
 
 import pymysql
 
@@ -10,11 +9,11 @@ class DbManager:
 	def __init__(self):
 		
 		self.connectionSettings = dict(
-									db=Config.DB_NAME,
-									user=Config.USERS_TABLE,
-									password=Config.DB_PASSWORD,
-									host=Config.DB_HOST
-								)		
+								db=Config.DB_NAME,
+								user=Config.USERS_TABLE,
+								password=Config.DB_PASSWORD,
+								host=Config.DB_HOST
+							)		
 
 	def execute(self,sql):
 
@@ -33,4 +32,3 @@ class DbManager:
 		conn.close()
 
 		return res
-
