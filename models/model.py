@@ -28,7 +28,7 @@ class Model:
 		if self._id is not None:
 			raise ModelAlreadyInsertedException()
 
-		sql = self.queryMaker.makeInsertQuery()
+		sql = self.queryMaker.makeInsertQuery(self.data)
 
 		try:
 			self.dbManager.execute(sql)
