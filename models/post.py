@@ -37,7 +37,7 @@ class Post(Model):
 	def update(self,cond:dict):
 			
 		try:
-			super().update(cond)
+			return super().update(cond)
 		except ModelNotInsertedException:
 			raise PostNotInsertedException()
 
