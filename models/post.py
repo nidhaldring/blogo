@@ -44,6 +44,5 @@ class Post(Model):
 	@classmethod
 	def query(cls,cond):
 
-		res = cls._search(cond)
-		return [cls(row[1],row[2],row[3],row[0]) for row in res]
+		return [cls(row[1],row[2],row[3],row[0]) for row in cls._search(cond)]
 
