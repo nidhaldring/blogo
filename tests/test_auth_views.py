@@ -6,75 +6,31 @@ from flask import request,session
 from createApp import createApp
 from config import TestingConfig
 
-# this seems a bit off 
-# must be refactored later
-# but it gets the job done
+from auth.utils import *
+
 
 index_ = "auth.index"
 
 class TestAuthViews(unittest.TestCase):	
 
-	def __init__(self,*args,**kargs):
-
-		super().__init__(*args,**kargs)
+	def setUp(self):
 
 		self.app = createApp(TestingConfig)
-		self.userData = dict(username="testu",password="testu",email="testu@test.com")
 
-	def test_a_register_view(self):
+	def test_register_view_returns_200_to_get_request(self):
 
-		with self.app.test_client() as client:
-			
-			resp = client.get("/auth/register",follow_redirects=True)
-			self.assertEqual(200,resp.status_code)
+		with self.app.test_client() as client:			
+			resp = client.get("/auth/register")
+			self.assertEqual(resp.status_code,200)
 
-			resp = client.post("/auth/register",data=self.userData,follow_redirects=True)
-			self.assertEqual(200,resp.status_code)
-			self.assertEqual(index_,request.endpoint)
-			self.assertTrue("_user_id" in session)
-
-			# test for duplicated email
-			resp = client.post("/auth/register",data=self.userData,follow_redirects=True)
-			self.assertEqual(index_,request.endpoint)
-
-
-	def test_b_logout_view(self):
+	def test_login_view_returns_200_to_get_request(self):
 
 		with self.app.test_client() as client:
-
-			resp = client.get("/auth/logout",follow_redirects=True)
-			self.assertEqual(index_,request.endpoint)
-			self.assertEqual(200,resp.status_code)
-			self.assertTrue("_user_id" not in session)
-
-
-	def test_c_login_view(self):
-
-		with self.app.test_client() as client:
-
 			resp = client.get("/auth/login")
 			self.assertEqual(resp.status_code,200)
 
-			# test with a non existent user
-			resp = client.post("/auth/login",
-					data=dict(email="non",password="non"),
-					follow_redirects=True
-				)
-			self.assertEqual(request.endpoint,index_)
+	def test_logout_view_returns_200_to_get_request(self):
 
-			# test with an existent user
-			resp = client.post("/auth/login",data=dict(
-					email=self.userData["email"],
-					password=self.userData["password"]
-				),
-				follow_redirects=True
-			)
+		with self.app.test_client() as client:
+			resp = client.get("/auth/logout",follow_redirects=True)
 			self.assertEqual(resp.status_code,200)
-			self.assertEqual(request.endpoint,index_)
-			self.assertTrue("_user_id" in session)
-
-			resp = client.get("/auth/login",follow_redirects=True)
-			self.assertTrue(request.endpoint,index_)
-
-
-
