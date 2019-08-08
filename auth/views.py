@@ -55,7 +55,7 @@ def login():
 
 		if not u or not check_password_hash(u.password,password):
 			flash("incorrect login !")
-			return redirect(url_for("auth.index"))
+			return redirect(url_for("auth.login"))
 		
 		loginUser(u)
 		flash(f"welcome {u.username} !")
