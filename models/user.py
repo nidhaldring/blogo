@@ -57,9 +57,7 @@ class User(Model):
 	@classmethod
 	def query(cls,cond:dict) -> list:
 
-		sql = cls.queryMaker.makeSearchQuery(cond)
-		res = cls.dbManager.execute(sql)
-
+		res = cls._search(cond)
 		return [
 				cls(
 					row[1],

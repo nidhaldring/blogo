@@ -2,27 +2,22 @@
 
 from models.model import Model
 from models.user import User
-from models.utils import query
+from models.utils.dbManager import DbManager 
+from models.utils.sqlQueryMaker import SQLQueryMaker 
 from models.exceptions import *
+from config import Config
 
 
 class Post(Model):
 
-	DB_CON = dict(host="localhost",db="test",user="root",password="root")
-	TABLE = "posts"
+	dbManager = DbManager()
+	queyMaker = SQLQueryMaker(Config.POSTS_TABLE)
 
+	def __init__(self,title,body,author,_id=None):
 
-	def __init__(self,title,body,authorID,_id=None):
+		super().__init__(dict(title=title,body=body),_id)
+		self.author = author
 
-		data = dict(title=title,body=body,authorID=authorID)
-		super().__init__(self.DB_CON,self.TABLE,data,_id)
-
-	
-	@classmethod
-	def query(cls,cond):
-
-		res = query(cls.DB_CON,cls.TABLE,cond)
-		return [cls(row[1],row[2],row[3],row[0]) for row in res]
 
 	def insert(self):
 
@@ -45,3 +40,10 @@ class Post(Model):
 			super().update(cond)
 		except ModelNotInsertedException:
 			raise PostNotInsertedException()
+
+	@classmethod
+	def query(cls,cond):
+
+		res = cls._search(cond)
+		return [cls(row[1],row[2],row[3],row[0]) for row in res]
+
