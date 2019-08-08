@@ -78,3 +78,10 @@ class Model:
 	def __eq__(self,other):
 
 		return self.data == other.data and self.id == other.id
+
+	@classmethod
+	def _search(cls,cond:dict):
+
+		return cls.dbManager.execute(cls.queryMaker.makeSearchQuery(cond))
+
+
