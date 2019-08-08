@@ -3,10 +3,6 @@
 
 # mock objects
 
-class MockDbManager:
-	def execute(self,sql):
-		return [("1","1","1","1")]
-
 class MockQueryMaker:
 	def __init__(self):
 		self.table = ""
