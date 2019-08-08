@@ -5,7 +5,7 @@ import unittest
 from werkzeug.security import check_password_hash
 
 from models.user import *
-from tests.mockObjects import *
+from tests.commonMockObjects import *
 
 # mock objects
 class MockDbManager:

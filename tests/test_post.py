@@ -4,7 +4,7 @@ import unittest
 
 from models.post import Post
 from models.exceptions import *
-from tests.mockObjects import *
+from tests.commonMockObjects import *
 
 
 # mock objects
