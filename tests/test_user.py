@@ -43,6 +43,18 @@ class TestUser(unittest.TestCase):
 		self.u.register()
 		self.assertRaises(UserAlreadyRegistredException,self.u.register)
 
+	def test_register_set_user_id(self):
+
+		self.u.register()
+		self.assertNotEqual(self.u.id,None)
+
+	def test_delete_set_id_to_None(self):
+
+		self.u.register()
+		self.u.delete()
+		self.assertEqual(self.u.id,None)
+
+
 	def test_update_raises_when_updating_unregistred_user(self):
 
 		newData = {"email":"ff@ff.com","password":"555"}
