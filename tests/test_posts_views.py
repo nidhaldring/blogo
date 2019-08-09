@@ -22,3 +22,9 @@ class TestPostsViews(unittest.TestCase):
 		with self.app.test_client() as client:
 			resp = client.get("/posts/create",follow_redirects=True)
 			self.assertEqual(resp.status_code,401) # unauthorized
+
+	def test_edit_view_return_401_when_accessed_by_unauthorized_user(self):
+
+		with self.app.test_client() as client:
+			resp = client.get("/posts/edit/2",follow_redirects=True)
+			self.assertEqual(resp.status_code,401) # unauthorized
