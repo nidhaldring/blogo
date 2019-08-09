@@ -27,7 +27,12 @@ class TestPost(unittest.TestCase):
 	def setUp(self):
 
 		self.author = Author()
-		self.post = Post("title","body",self.author)
+		self.post = Post("title","body",author=self.author)
+
+	def test_post_raises_when_missing_both_author_and_authorID(self):
+		
+		with self.assertRaises(PostRequiredArgumentMissingException):
+			Post("1","1")
 
 	def test_insert_raise_when_reinserted(self):
 
