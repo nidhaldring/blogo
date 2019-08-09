@@ -11,13 +11,22 @@ from config import Config
 class Post(Model):
 
 	dbManager = DbManager()
-	queyMaker = SQLQueryMaker(Config.POSTS_TABLE)
+	queryMaker = SQLQueryMaker(Config.POSTS_TABLE)
 
-	def __init__(self,title,body,author,_id=None):
+	def __init__(self,title,body,*,authorID=None,author=None,_id=None):
 
-		super().__init__(dict(title=title,body=body),_id)
-		self.author = author
+		if not author and not authorID:
+			raise PostRequiredArgumentMissingException()
 
+		super().__init__(dict(title=title,body=body,authorID=authorID),_id)
+		self._author = author
+
+	@property
+	def author(self):
+		if not self._author:
+			self._author = User.query({"id":self.authorID})[0]
+		return self._author
+	
 
 	def insert(self):
 
@@ -44,5 +53,5 @@ class Post(Model):
 	@classmethod
 	def query(cls,cond):
 
-		return [cls(row[1],row[2],row[3],row[0]) for row in cls._search(cond)]
+		return [cls(row[1],row[2],authorID=row[3],_id=row[0]) for row in cls._search(cond)]
 
