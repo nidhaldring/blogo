@@ -31,3 +31,7 @@ class PostNotInsertedException(ModelNotInsertedException):
 	def __init__(self):
 		self.message = "This post is not inserted on the db !"
 
+class PostRequiredArgumentMissingException(Exception):
+	def __init__(self):
+		self.message = "you must provide either an author object or an author id !"
+
