@@ -1,9 +1,9 @@
 
-from flask import abort,render_template
+from flask import abort,render_template,request,redirect,url_for
 
 from posts import bp
 from models.post import Post
-from auth.utils import loginRequired
+from auth.utils import loginRequired,getCurrentUser
 
 
 @bp.route("/<int:id_>")
@@ -17,9 +17,17 @@ def index(id_):
 
 
 
-@bp.route("/create")
+@bp.route("/create",methods=["GET","POST"])
 @loginRequired
 def create():
-	return "ok"
+	
+	if request.method == "POST":
+		title = request.form["title"]
+		body = request.form["body"]
+		post = Post(title,body,author=getCurrentUser()).insert()
+
+		return redirect(url_for("posts.index",id_=post.id))
+
+	return render_template("posts/create.html")
 
 	
