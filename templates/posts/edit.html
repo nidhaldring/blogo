@@ -1,0 +1,8 @@
+
+
+<form method="POST" action="{{url_for('posts.edit',id=post.id)}}">
+	
+	title:<input type="text" name="title" value="{{post.title}}"> <br/>
+	body:<textarea name="body" rows="30" cols="30">{{post.body}}</textarea> <br/>
+	<input type="submit" name="save">
+</form>
