@@ -1,6 +1,7 @@
 
 
 from models.exceptions import ModelAlreadyInsertedException,ModelNotInsertedException,ModelUniqueConstraintException
+import pymysql
 
 class Model:
 
