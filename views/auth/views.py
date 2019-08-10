@@ -2,9 +2,9 @@
 from flask import (request,render_template,redirect,url_for,flash)
 from werkzeug import check_password_hash
 
-from auth import bp
+from views.auth import bp
 from models.user import User,EmailAlreadyExistsException
-from auth.utils import loginUser,getCurrentUser,logoutUser,loginRequired
+from views.auth.utils import loginUser,getCurrentUser,logoutUser,loginRequired
 
 
 

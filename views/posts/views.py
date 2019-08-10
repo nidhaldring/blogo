@@ -1,9 +1,9 @@
 
 from flask import abort,render_template,request,redirect,url_for,flash
 
-from posts import bp
+from views.posts import bp
 from models.post import Post
-from auth.utils import loginRequired,getCurrentUser
+from views.auth.utils import loginRequired,getCurrentUser
 
 
 @bp.route("/<int:id_>")

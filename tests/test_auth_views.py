@@ -6,7 +6,7 @@ from flask import request,session
 from createApp import createApp
 from config import TestingConfig
 
-from auth.utils import *
+from views.auth.utils import *
 
 
 index_ = "auth.index"

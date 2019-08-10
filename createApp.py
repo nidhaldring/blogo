@@ -4,8 +4,8 @@
 
 from flask import Flask 
 
-from auth import bp as auth_bp
-from posts import bp as posts_bp
+from views.auth import bp as auth_bp
+from views.posts import bp as posts_bp
 
 
 def createApp(config):
