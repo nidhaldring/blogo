@@ -12,11 +12,15 @@ class Post(Model):
 
 	dbManager = DbManager()
 	queryMaker = SQLQueryMaker(Config.POSTS_TABLE)
+	usersManager = User
 
 	def __init__(self,title,body,*,authorID=None,author=None,_id=None):
 
-		if not author and not authorID:
-			raise PostRequiredArgumentMissingException()
+		if not author and authorID is None:
+			raise PostRequiredArgumentMissingException("author" if not author else "authorID")
+
+		elif author and not authorID:
+			authorID = author.id
 
 		super().__init__(dict(title=title,body=body,authorID=authorID),_id)
 		self._author = author
@@ -24,7 +28,7 @@ class Post(Model):
 	@property
 	def author(self):
 		if not self._author:
-			self._author = User.query({"id":self.authorID})[0]
+			self._author = self.usersManager.query({"id":self.authorID})[0]
 		return self._author
 	
 
