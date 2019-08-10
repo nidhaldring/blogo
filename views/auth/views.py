@@ -37,7 +37,7 @@ def register():
 
 
 
-
+@bp.route("/",methods=["POST","GET"])
 @bp.route("/login",methods=["POST","GET"])
 def login():
 
@@ -70,9 +70,3 @@ def logout():
 
 	logoutUser()
 	return redirect(url_for("auth.index"))
-
-
-# TODO: delete this later
-@bp.route("/")
-def index():
-	return str(getCurrentUser())
