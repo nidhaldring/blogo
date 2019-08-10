@@ -14,7 +14,7 @@ def register():
 	if getCurrentUser() is not None:
 
 		flash("You're already registred !")	
-		return redirect(url_for("auth.index"))
+		return redirect(url_for("home.index"))
 
 	if request.method == "POST":
 
@@ -27,11 +27,11 @@ def register():
 			u.register()
 		except EmailAlreadyExistsException as e:
 			flash(e.message)
-			return redirect(url_for("auth.index"))
+			return redirect(url_for("auth.register"))
 			
 		loginUser(u)
 
-		return redirect(url_for("auth.index"))
+		return redirect(url_for("auth.login"))
 
 	return render_template("auth/register.html")
 
@@ -44,7 +44,7 @@ def login():
 	if getCurrentUser() is not None:
 
 		flash("You're already logged in !")
-		return redirect(url_for("auth.index"))
+		return redirect(url_for("home.index"))
 
 	if request.method == "POST":
 			
@@ -59,7 +59,7 @@ def login():
 		
 		loginUser(u)
 		flash(f"welcome {u.username} !")
-		return redirect(url_for("auth.index"))
+		return redirect(url_for("home.index"))
 
 	return render_template("auth/login.html")
 
@@ -69,4 +69,4 @@ def login():
 def logout():
 
 	logoutUser()
-	return redirect(url_for("auth.index"))
+	return redirect(url_for("auth.login"))
