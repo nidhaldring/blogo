@@ -11,7 +11,6 @@ def index(id_):
 
 	try:
 		post = Post.query({"id":id_})[0]
-		print(post)
 	except IndexError:
 		abort(404)
 	return render_template("posts/post.html",post=post)
