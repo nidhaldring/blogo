@@ -9,7 +9,6 @@ from config import TestingConfig
 from views.auth.utils import *
 
 
-index_ = "auth.index"
 
 class TestAuthViews(unittest.TestCase):	
 
