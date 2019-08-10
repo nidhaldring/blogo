@@ -4,4 +4,4 @@ from flask import Blueprint
 
 bp = Blueprint("posts",__name__)
 
-from posts.view import *
+from posts.views import *
