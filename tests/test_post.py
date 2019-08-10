@@ -9,7 +9,7 @@ from tests.commonMockObjects import *
 
 # mock objects
 class Author:
-	pass
+	id = 5
 
 class MockDbManager:
 	def execute(self,sql):
@@ -32,7 +32,7 @@ class TestPost(unittest.TestCase):
 	def test_post_raises_when_missing_both_author_and_authorID(self):
 		
 		with self.assertRaises(PostRequiredArgumentMissingException):
-			Post("1","1")
+			Post("1","1",_id="1")
 
 	def test_insert_raise_when_reinserted(self):
 
