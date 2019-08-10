@@ -61,7 +61,7 @@ def edit(id):
 			flash("post was updated sucessfully !")
 			return redirect(url_for("posts.index",id_=post.id))
 
-		return render_template("posts/edit.html")
+		return render_template("posts/edit.html",post=post)
 
 	abort(403) #forbidden
 
