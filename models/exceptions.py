@@ -32,6 +32,10 @@ class PostNotInsertedException(ModelNotInsertedException):
 		self.message = "This post is not inserted on the db !"
 
 class PostRequiredArgumentMissingException(Exception):
+	def __init__(self,missingArg):
+		self.message = f"You must provide {missingArg} !"
+
+class PostAuthorDoesNotExistException(Exception):
 	def __init__(self):
-		self.message = "you must provide either an author object or an author id !"
+		self.message = "The post author does not exist !"
 
