@@ -34,7 +34,7 @@ class TestPost(unittest.TestCase):
 		with self.assertRaises(PostRequiredArgumentMissingException):
 			Post("1","1",_id="1")
 
-	def test_insert_raise_when_reinserted(self):
+	def test_insert_raises_when_reinserted(self):
 
 		self.post.insert()
 		self.assertRaises(PostAlreadyInsertedException,self.post.insert)
