@@ -1,0 +1,16 @@
+
+<center>
+
+{% if user %}
+"welcome " {{user.username}} <br/>
+{%endif%}
+
+- Newest Post - <br/>
+{% for post in posts%}
+title : <b>{{post.title}}</b> <br/>
+body : {{post.body}} <br/>
+author : {{post.author}} <br/>
+<p>@-----------------@</p>
+{% endfor %}
+
+</center>
