@@ -9,6 +9,6 @@ class MockQueryMaker:
 	def makeInsertQuery(self,data):pass 
 	def makeDeleteQuery(self,cond):pass 
 	def makeUpdateQuery(self,data,cond):pass 
-	def makeSearchQuery(self,cond):pass
+	def makeSearchQuery(self,cond,limit=None):pass
 #
 
