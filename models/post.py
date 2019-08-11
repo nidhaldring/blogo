@@ -55,7 +55,7 @@ class Post(Model):
 			raise PostNotInsertedException()
 
 	@classmethod
-	def query(cls,cond):
+	def query(cls,cond:dict,limit=None):
 
-		return [cls(row[1],row[2],authorID=row[3],_id=row[0]) for row in cls._search(cond)]
+		return [cls(row[1],row[2],authorID=row[3],_id=row[0]) for row in cls._search(cond,limit)]
 

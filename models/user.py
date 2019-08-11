@@ -55,9 +55,9 @@ class User(Model):
 
 
 	@classmethod
-	def query(cls,cond:dict) -> list:
+	def query(cls,cond:dict,limit=None) -> list:
 
-		return [cls(row[1],row[2],row[3],_id=row[0]) for row in cls._search(cond)] 
+		return [cls(row[1],row[2],row[3],_id=row[0]) for row in cls._search(cond,limit)] 
 
 	# for debugging purposes
 	def __repr__(self):

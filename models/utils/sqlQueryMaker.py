@@ -27,9 +27,15 @@ class SQLQueryMaker:
 
 		return sql
 
-	def makeSearchQuery(self,cond:dict) -> str:
+	def makeSearchQuery(self,cond:dict,*,orderBy:list=[],limit=None,desc=False) -> str:
 
-		return f"select * from {self.table} where {self._createCond(cond)};"
+		if desc and not orderBy:
+			raise Exception("desc can't be set true when no orderBy list is given")
+
+		limit = f" limit {limit}" if limit else ""
+		order = f" order by " + ",".join(orderBy) if orderBy else ""
+		order += " desc" if desc else ""
+		return f"select * from {self.table} where {self._createCond(cond)}{limit}{order};"
 
 	def _createCond(self,cond:dict):
 		

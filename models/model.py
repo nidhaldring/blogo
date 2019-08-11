@@ -81,8 +81,8 @@ class Model:
 		return self.data == other.data and self.id == other.id
 
 	@classmethod
-	def _search(cls,cond:dict):
+	def _search(cls,cond:dict,limit):
 
-		return cls.dbManager.execute(cls.queryMaker.makeSearchQuery(cond))
+		return cls.dbManager.execute(cls.queryMaker.makeSearchQuery(cond,limit))
 
 
