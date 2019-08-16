@@ -1,12 +1,22 @@
 
 
-<center>
-	<form action="{{url_for('auth.login')}}" method="POST">
+<head>
+	<link rel="stylesheet" href="{{url_for('static',filename='loginForm.css')}}">
 
-		<span>email</span> : <input type="text" name="email"> <br/>
-		<span>password :</span> <input type="password" name="password"> <br/>
-		<button type="submit">login</button>
+</head>
 
-	</form>
+<body>
 
-</center>
+	<div class = "login-form">
+
+		<form action="{{url_for('auth.login')}}" method="POST">
+
+			<span class="login-field" >email:</span> <input type="text" name ="email" class="login-input" > 
+			<span class="login-field" >password :</span> <input type = "password" name="password" class="login-input"> 
+			<button type="submit" class="login-button">login</button>
+
+		</form>
+
+	</div>
+
+</body>
