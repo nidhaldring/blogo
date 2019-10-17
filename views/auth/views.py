@@ -1,72 +1,67 @@
 
-from flask import (request,render_template,redirect,url_for,flash)
+from flask import request,render_template,redirect,url_for,flash
 from werkzeug import check_password_hash
+from sqlalchemy import exc
 
 from views.auth import bp
-from models.user import User,EmailAlreadyExistsException
-from views.auth.utils import loginUser,getCurrentUser,logoutUser,loginRequired
+from models.user import User
+from views.auth.utils import *
 
 
 
 @bp.route("/register",methods=["POST","GET"])
 def register():
-
 	if getCurrentUser() is not None:
-
-		flash("You're already registred !")	
+		flash("You're already registred !")
 		return redirect(url_for("home.index"))
 
 	if request.method == "POST":
-
-		u = User(request.form["username"],
-			request.form["password"],
-			request.form["email"]
-			)
-
+		u = User(
+			username = request.form["username"],
+			password = request.form["password"],
+			email = request.form["email"]
+		)
 		try:
-			u.register()
-		except EmailAlreadyExistsException as e:
-			flash(e.message)
+			u.insert()
+		except exc.IntegrityError as e:
+			flash("User already registred with the same email !")
 			return redirect(url_for("auth.register"))
-			
-		loginUser(u)
 
-		return redirect(url_for("auth.login"))
+		loginUser(u)
+		return redirect(url_for("home.index"))
 
 	return render_template("auth/register.html")
-
 
 
 @bp.route("/",methods=["POST","GET"])
 @bp.route("/login",methods=["POST","GET"])
 def login():
-
 	if getCurrentUser() is not None:
-
 		flash("You're already logged in !")
 		return redirect(url_for("home.index"))
 
 	if request.method == "POST":
-			
 		email = request.form["email"]
 		password = request.form["password"]
-		res = User.query({"email":email})
-		u = res[0] if res else None
 
-		if not u or not check_password_hash(u.password,password):
-			flash("incorrect login !")
+		try:
+			user = User.query().filter_by(email=email).one()
+		except:
+			flash("Login failed !")
 			return redirect(url_for("auth.login"))
-		
-		loginUser(u)
-		flash(f"welcome {u.username} !")
+
+		if not check_password_hash(user.password,password):
+			flash("Login failed !")
+			return redirect(url_for("auth.login"))
+
+		loginUser(user)
+		flash(f"welcome {user.username} !")
 		return redirect(url_for("home.index"))
 
 	return render_template("auth/login.html")
 
 
-
 @bp.route("/logout")
 def logout():
-
 	logoutUser()
 	return redirect(url_for("auth.login"))
