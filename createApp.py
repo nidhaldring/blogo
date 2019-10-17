@@ -1,8 +1,5 @@
 
-
-
-
-from flask import Flask 
+from flask import Flask
 
 from views.auth import bp as auth_bp
 from views.posts import bp as posts_bp
