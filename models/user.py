@@ -1,15 +1,17 @@
 
 from werkzeug.security import generate_password_hash
 from sqlalchemy import *
+from sqlalchemy.orm import relationship
 
 from config import Config
 from models.model import ModelMixin,Base
 
 class User(Base,ModelMixin):
 	__tablename__ = Config.USERS_TABLE
-	id = Column(Integer,primary_key=True)
+	_id = Column(Integer,primary_key=True)
 	username = Column(String(64),nullable=False)
 	_password = Column(String(96),nullable=False)
+	posts = relationship("Post",back_populates="user")
 
 	def __init__(self,*,username,password):
 		self.username = username
