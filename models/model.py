@@ -16,7 +16,7 @@ class ModelMixin:
 		try:
 			self.session.add(self)
 			self.session.commit()
-		except e:
+		except Exception as e:
 			self.session.rollback()
 			raise e
 
@@ -24,7 +24,7 @@ class ModelMixin:
 		try:
 			self.session.delete(self)
 			self.session.commit()
-		except e:
+		except Exception as e:
 			self.session.rollback()
 			raise e
 
