@@ -13,12 +13,20 @@ class ModelMixin:
 	session = Session(bind=eng)
 
 	def insert(self):
-		self.session.add(self)
-		self.session.commit()
+		try:
+			self.session.add(self)
+			self.session.commit()
+		except e:
+			self.session.rollback()
+			raise e
 
 	def delete(self):
-		self.session.delete(self)
-		self.session.commit()
+		try:
+			self.session.delete(self)
+			self.session.commit()
+		except e:
+			self.session.rollback()
+			raise e
 
 	@classmethod
 	def query(cls):
