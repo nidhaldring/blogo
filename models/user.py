@@ -21,7 +21,7 @@ class User(Base,ModelMixin):
 
 	@property
 	def password(self):
-		raise AttributeError("can't access password !")
+		return self._password
 
 	@password.setter
 	def password(self,p:str):
