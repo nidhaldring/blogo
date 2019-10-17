@@ -11,6 +11,7 @@ class User(Base,ModelMixin):
 	_id = Column(Integer,primary_key=True)
 	username = Column(String(64),nullable=False)
 	_password = Column(String(96),nullable=False)
+	email = Column(String(96),nullable=False,unique=True)
 	posts = relationship("Post",back_populates="user")
 
 	def __init__(self,*,username,password):
