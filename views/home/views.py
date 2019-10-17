@@ -8,4 +8,4 @@ from models.post import Post
 
 @bp.route("/")
 def index():
-	return "welcome home !"
+	return render_template("home/index.html",posts=Post.query().all(),user=getCurrentUser())
