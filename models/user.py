@@ -14,9 +14,10 @@ class User(Base,ModelMixin):
 	email = Column(String(96),nullable=False,unique=True)
 	posts = relationship("Post",back_populates="user")
 
-	def __init__(self,*,username,password):
+	def __init__(self,*,username,password,email):
 		self.username = username
 		self.password = password
+		self.email = email
 
 	@property
 	def password(self):
