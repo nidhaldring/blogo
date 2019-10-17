@@ -15,7 +15,6 @@ class Post(Base,ModelMixin):
     user = relationship("User",back_populates="posts")
 
     def __init__(self,*,title,body,userId):
-        Base.__init__(self)
         self.title = title
         self.body = body
         self.userId = userId
