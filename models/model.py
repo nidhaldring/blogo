@@ -12,6 +12,13 @@ class ModelMixin:
 
 	session = Session(bind=eng)
 
+	@property
+	def id(self):
+		return self._id
+	@id.setter
+	def id(self,i):
+		raise AttributeError("can't set id")
+
 	def insert(self):
 		try:
 			self.session.add(self)
