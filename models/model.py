@@ -1,88 +1,25 @@
 
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import Session
 
-from models.exceptions import ModelAlreadyInsertedException,ModelNotInsertedException,ModelUniqueConstraintException
-import pymysql
+from config import Config
 
-class Model:
+eng = create_engine(Config.ENGINE_URI)
+Base = declarative_base(bind=eng)
 
-	'''base class for all models'''
+class ModelMixin:
 
-	dbManager = None 
-	queryMaker = None
-		
-	def __init__(self,data:dict,_id=None):
-
-		self.data = data 
-		self._id = _id
-
-	@property
-	def id(self):
-		return self._id
-	
-	@id.setter
-	def id(self,v):
-		raise AttributeError("Can't set id !")
-
+	session = Session(bind=eng)
 
 	def insert(self):
-
-		if self._id is not None:
-			raise ModelAlreadyInsertedException()
-
-		sql = self.queryMaker.makeInsertQuery(self.data)
-
-		try:
-			self.dbManager.execute(sql)
-		except pymysql.err.IntegrityError as e:
-			if e.args[0] == 1062:
-				raise ModelUniqueConstraintException()
-		# set the id
-		self._id = self.dbManager.execute(f"select max(id) from {self.queryMaker.table};")[0][0]
-
-		return self
+		self.session.add(self)
+		self.session.commit()
 
 	def delete(self):
-
-		if self._id is None:
-			raise ModelNotInsertedException()
-
-		sql = self.queryMaker.makeDeleteQuery({"id":self.id})
-		self.dbManager.execute(sql)
-		self._id = None
-
-		return self
-
-
-	def update(self,newData:dict):
-
-		if self._id is None:
-			raise ModelNotInsertedException()
-
-		# update the current object
-		self.__dict__.update(newData)
-
-		sql = self.queryMaker.makeUpdateQuery(newData,{"id":self.id})
-		
-		try:
-			self.dbManager.execute(sql)
-		except pymysql.err.IntegrityError as e:
-			if e.args[0] == 1062:
-				raise ModelUniqueConstraintException()
-
-		return self
-
-
-	def __getattr__(self,key):
-
-		return self.data[key]
-
-	def __eq__(self,other):
-
-		return self.data == other.data and self.id == other.id
+		self.session.delete(self)
+		self.session.commit()
 
 	@classmethod
-	def _search(cls,cond:dict,limit):
-
-		return cls.dbManager.execute(cls.queryMaker.makeSearchQuery(cond,limit))
-
-
+	def query(cls):
+		return cls.session.query(cls)
