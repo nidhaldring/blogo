@@ -6,13 +6,6 @@ class Config:
 
 	TESTING = False
 	SECRET_KEY = os.urandom(10)
-	DB_NAME = "blog"
-	DB_PASSWORD = "root"
-	DB_HOST = "localhost"
+	ENGINE_URI = "mysql+pymysql://localhost/tests"
 	USERS_TABLE = "users"
 	POSTS_TABLE = "posts"
-
-
-class TestingConfig(Config):
-
-	TESTING = True
