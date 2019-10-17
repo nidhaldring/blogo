@@ -1,61 +1,19 @@
 
+from sqlalchemy import *
 
-from models.model import Model
-from models.user import User
-from models.utils.dbManager import DbManager 
-from models.utils.sqlQueryMaker import SQLQueryMaker 
-from models.exceptions import *
 from config import Config
+from models.model import ModelMixin,Base
 
 
-class Post(Model):
+class Post(Base,ModelMixin):
+    __tablename__ = Config.POSTS_TABLE
+    id = Column(Integer,primary_key=True,nullable=False)
+    title = Column(String(64),nullable=False)
+    body = Column(String(1024),nullable=False)
+    userId = Column(Integer,ForeignKey(Config.USERS_TABLE + ".id"),nullable=False)
 
-	dbManager = DbManager()
-	queryMaker = SQLQueryMaker(Config.POSTS_TABLE)
-	usersManager = User
-
-	def __init__(self,title,body,*,authorID=None,author=None,_id=None):
-
-		if not author and authorID is None:
-			raise PostRequiredArgumentMissingException("author" if not author else "authorID")
-
-		elif author and not authorID:
-			authorID = author.id
-
-		super().__init__(dict(title=title,body=body,authorID=authorID),_id)
-		self._author = author
-
-	@property
-	def author(self):
-		if not self._author:
-			self._author = self.usersManager.query({"id":self.authorID})[0]
-		return self._author
-	
-
-	def insert(self):
-
-		try:
-			return super().insert()
-		except ModelAlreadyInsertedException:
-			raise PostAlreadyInsertedException()
-
-
-	def delete(self):
-
-		try:
-			return super().delete()
-		except ModelNotInsertedException:
-			raise PostNotInsertedException()
-
-	def update(self,cond:dict):
-			
-		try:
-			return super().update(cond)
-		except ModelNotInsertedException:
-			raise PostNotInsertedException()
-
-	@classmethod
-	def query(cls,cond:dict,limit=None):
-
-		return [cls(row[1],row[2],authorID=row[3],_id=row[0]) for row in cls._search(cond,limit)]
-
+    def __init__(self,*,title,body,userId):
+        Base.__init__(self)
+        self.title = title
+        self.body = body
+        self.userId = userId
