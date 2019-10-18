@@ -15,7 +15,7 @@ def getCurrentUser():
 # add support for remember me feature later
 def loginUser(user):
 	if not user.id:
-		raise UserNotRegistredException()
+		raise Exception("User not Registred")
 	session["_user_id"] = user.id
 	global currentUser
 	currentUser = user
