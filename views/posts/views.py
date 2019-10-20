@@ -31,8 +31,7 @@ def create():
 		return redirect(url_for("posts.index",id=post.id))
 
 	return render_template("posts/create.html")
-
-
+	
 
 @bp.route("/edit/<int:id>",methods=["GET","POST"])
 @loginRequired
