@@ -6,27 +6,29 @@ from models.post import Post
 from views.auth.utils import loginRequired,getCurrentUser
 
 
-@bp.route("/<int:id_>")
-def index(id_):	
-
+@bp.route("/<int:id>")
+def index(id):
 	try:
-		post = Post.query({"id":id_})[0]
-	except IndexError:
+		post = Post.query().filter_by(_id=id).one()
+	except:
+		flash("post not found !")
 		abort(404)
 	return render_template("posts/post.html",post=post)
-
 
 
 @bp.route("/create",methods=["GET","POST"])
 @loginRequired
 def create():
-	
 	if request.method == "POST":
 		title = request.form["title"]
 		body = request.form["body"]
-		post = Post(title,body,author=getCurrentUser()).insert()
-
-		return redirect(url_for("posts.index",id_=post.id))
+		post = Post(
+			title=title,
+			body=body,
+			userId=getCurrentUser().id
+		)
+		post.insert()
+		return redirect(url_for("posts.index",id=post.id))
 
 	return render_template("posts/create.html")
 
@@ -35,32 +37,19 @@ def create():
 @bp.route("/edit/<int:id>",methods=["GET","POST"])
 @loginRequired
 def edit(id):
-
 	try:
-		post = Post.query({"id":id})[0]
-		author = post.author
-	except IndexError:
-		abort(404) # not found
+		post = Post.query().filter_by(_id=id).one()
+	except:
+		flash("post not found !")
+		abort(404) #not found
 
-	if author == getCurrentUser():
+	author = post.user
+	if author.id == getCurrentUser().id:
 		if request.method == "POST":
-			newData = {}
-
-			body = request.form["body"]
-			if body != post.body:
-				newData["body"] = body
-
-			title = request.form["title"]
-			if title != post.title:
-				newData["title"] = title
-
-			post.update(newData)
-
+			post.body = request.form["body"]
+			post.title = request.form["title"]
+			post.insert()
 			flash("post was updated sucessfully !")
-			return redirect(url_for("posts.index",id_=post.id))
-
+			return redirect(url_for("posts.index",id=post.id))
 		return render_template("posts/edit.html",post=post)
-
 	abort(403) #forbidden
-
-	
