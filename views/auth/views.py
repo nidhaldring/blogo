@@ -24,7 +24,7 @@ def register():
 		try:
 			u.insert()
 		except exc.IntegrityError as e:
-			flash("User already registred with the same email !")
+			flash("email alreay in use !")
 			return redirect(url_for("auth.register"))
 
 		loginUser(u)
@@ -37,7 +37,7 @@ def register():
 @bp.route("/login",methods=["POST","GET"])
 def login():
 	if getCurrentUser() is not None:
-		flash("You're already logged in !")
+		flash("you're already logged in !")
 		return redirect(url_for("home.index"))
 
 	if request.method == "POST":
