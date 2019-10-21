@@ -1,22 +1,28 @@
 
 
 <head>
-	<link rel="stylesheet" href="{{url_for('static',filename='loginForm.css')}}">
+	<link rel="stylesheet" href="{{url_for('static',filename='login.css')}}">
 
 </head>
 
 <body>
 
-	<div class = "login-form">
 
-		<form action="{{url_for('auth.login')}}" method="POST">
+	<form action="{{url_for('auth.login')}}" method="POST" class="form">
+		<input class="input" type="text" name ="email" placeholder="email">
+		<input class="input" type = "password" name="password" placeholder="password">
+		<input class="formButton input" type="submit"  value="login">
+		<p>not registred ! <a href="{{url_for('auth.register')}}">create an account ?</a></p>
 
-			<span class="login-field" >email:</span> <input type="text" name ="email" class="login-input" > 
-			<span class="login-field" >password :</span> <input type = "password" name="password" class="login-input"> 
-			<button type="submit" class="login-button">login</button>
+		{% with messages = get_flashed_messages() %}
+			{% if messages %}
+				{% for msg in messages %}
+					<span class="error"> {{msg}}</span>
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
 
-		</form>
+	</form>
 
-	</div>
 
 </body>
