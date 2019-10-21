@@ -47,11 +47,11 @@ def login():
 		try:
 			user = User.query().filter_by(email=email).one()
 		except:
-			flash("Login failed !")
+			flash("login failed !")
 			return redirect(url_for("auth.login"))
 
 		if not check_password_hash(user.password,password):
-			flash("Login failed !")
+			flash("login failed !")
 			return redirect(url_for("auth.login"))
 
 		loginUser(user)
