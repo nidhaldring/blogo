@@ -1,11 +1,23 @@
+<head>
+	<link rel="stylesheet" href="{{url_for('static',filename='register.css')}}">
+
+</head>
 
 
+<form method="POST" action="{{url_for('auth.register')}}" class="form">
 
-<form method="POST" action="{{url_for('auth.register')}}">
+	<input type="text" name="username" class="input" placeholder="username">
+	<input type="text" name="email" class="input" placeholder="email">
+	<input type="password" name="password" class="input" placeholder="password">
+	<input type="submit" value="register" class="formButton input">
+	<p>already registred ? <a href="{{url_for('auth.login')}}">login !</a></p>
 
-	username : <input type="text" name="username"> <br/>
-	password : <input type="password" name="password"> <br/>
-	email : <input type="text" name="email"> <br/>
-	<button type="submit">register</button>
-
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for msg in messages %}
+				<span class="error"> {{msg}}</span>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+	
 </form>
