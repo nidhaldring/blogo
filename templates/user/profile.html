@@ -9,7 +9,7 @@
 
     <form id="profile">
 
-        <img src="{{url_for('static',filename='imgs/' + user.pic)}}">
+        <img src="{{url_for('static',filename='imgs/' + user.pic)}}" id="profileImg">
         <div> <span>hello</span> <input  name="username" value={{user.username}}> </div>
 
         <div> <span>email</span> <input name="email" value={{user.email}}>
