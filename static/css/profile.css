@@ -1,0 +1,34 @@
+
+
+#profile{
+    width: 250px;
+    height: 250px;
+    position: absolute;
+    padding: 5px;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    text-transform: capitalize;
+}
+
+#profile img{
+    display: block;
+    margin: 10px;
+    margin-left: 45px;
+}
+
+#profile div{
+    margin-bottom: 12px;
+}
+
+#profile span{
+    margin-right: 5px;
+
+}
+
+
+#profile input{
+
+}
