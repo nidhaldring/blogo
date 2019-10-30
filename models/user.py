@@ -12,6 +12,7 @@ class User(Base,ModelMixin):
 	username = Column(String(64),nullable=False)
 	_password = Column(String(96),nullable=False)
 	email = Column(String(96),nullable=False,unique=True)
+	pic = Column(String(96),default="profile.png")
 	posts = relationship("Post",back_populates="user")
 
 	def __init__(self,*,username,password,email):
