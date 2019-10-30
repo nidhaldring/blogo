@@ -1,15 +1,20 @@
 
 <head>
     <title>{{user.username}}</title>
-    <link href="{{url_for('static',filename='profile.css')}}" rel="stylesheet"/>
+    <link href="{{url_for('static',filename='css/profile.css')}}" rel="stylesheet"/>
+    <script script="{{url_for('static',filename='js/profile.js')}}"></script>
 </head>
 
 <body>
 
-    <div id="profile">
-        <img src="{{url_for('static',filename='profile.png')}}">
-        <p> hello {{user.username}}</p>
-        <p> email : {{user.email}}</p>
-    </div>
+    <form id="profile">
+
+        <img src="{{url_for('static',filename='imgs/' + user.pic)}}">
+        <div> <span>hello</span> <input  name="username" value={{user.username}}> </div>
+
+        <div> <span>email</span> <input name="email" value={{user.email}}>
+        </div>
+
+    </form>
 
 </body>
