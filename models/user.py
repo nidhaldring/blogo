@@ -7,6 +7,7 @@ from config import Config
 from models.model import ModelMixin,Base
 
 class User(Base,ModelMixin):
+	
 	__tablename__ = Config.USERS_TABLE
 	_id = Column(Integer,primary_key=True)
 	username = Column(String(64),nullable=False)
