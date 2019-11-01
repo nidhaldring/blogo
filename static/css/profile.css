@@ -1,43 +1,64 @@
 
+@import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-#profile{
-    width: 250px;
-    height: 250px;
+body{
+    background-color: #0269A4;
+    font-family : "Roboto";
+}
+
+.form{
     position: absolute;
-    padding: 5px;
     top: 0;
+    bottom: 0;
     right: 0;
     left: 0;
-    bottom: 0;
     margin: auto;
+    width: 300px;
+    height: 330px;
+    background-color: white;
+    padding: 3%;
+    box-shadow: 0px 0px 10px 2px black;
+    border-radius: 2px;
+}
+
+
+.input{
+    display: block;
+    height: 40px;
+    margin-bottom: 20px;
+    width: 100%;
+    padding: 10px;
+    font-size: 19px;
+    background-color: #f2f2f2;
+    border: none;
+}
+
+.input::placeholder{
     text-transform: capitalize;
 }
 
-#profile img{
-    display: block;
-    margin: 10px;
-    margin-left: 45px;
-    width: 128px;
-    height: auto;
+.formButton{
+    text-transform: capitalize;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    outline: none;
 }
 
-#profile img:hover{
+.formButton:hover{
     cursor: pointer;
+    background-color: #43A047;
 }
 
-#profile div{
-    margin-bottom: 12px;
-}
-
-#profile span{
-    display: inline-block;
-    margin-right: 5px;
-    width: 60px;
-}
-
-
-#profile #button{
+#profileImg{
     display: block;
-    width: 80px;
+    width: 150px;
+    max-height: 150px;
     margin: auto;
+    margin-bottom: 30px;
+}
+
+#profileImg:hover{
+    cursor: pointer;
+    box-shadow: 0 0 10px 5px black;
 }
