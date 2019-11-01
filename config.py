@@ -10,3 +10,4 @@ class Config:
 	USERS_TABLE = "users"
 	POSTS_TABLE = "posts"
 	UPLOAD_FOLDER = "uploads"
+	DEFAULT_USER_PIC_LOCATIONS = "uploads/profile.png"
