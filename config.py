@@ -9,3 +9,4 @@ class Config:
 	ENGINE_URI = "mysql+pymysql://localhost/tests"
 	USERS_TABLE = "users"
 	POSTS_TABLE = "posts"
+	UPLOAD_FOLDER = "uploads"
