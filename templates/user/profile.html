@@ -1,21 +1,23 @@
 
 <head>
-    <title>Blogo | {{user.username}}</title>
+    <title>Blogo | {{user.username}} </title>
     <link href="{{url_for('static',filename='css/profile.css')}}" rel="stylesheet"/>
 </head>
 
 <body>
 
-    <form id="profile" action="{{url_for('user.profile')}}" method="post" enctype="multipart/form-data">
+    <form id="profile" action="{{url_for('user.profile')}}" method="post" enctype="multipart/form-data" class="form">
 
         <img src="{{url_for('static',filename=user.pic)}}" id="profileImg">
+
         <input type="file" id="fileInput" style="display:none;" name="profileImg">
 
-        <div> <span>hello</span> <input  name="username" value={{user.username}}> </div>
+        <input  name="username" value="{{user.username}}" class="input">
 
-        <div> <span>email</span> <input name="email" value={{user.email}}> </div>
-        <div> <span>password</span> <input name="password" type="password" value="*****"> </div>
-        <input type="submit" value="update" id="button">
+        <input name="email" value="{{user.email}}" class="input">
+
+        <input name="password" type="password" placeholder="*****" class="input">
+        <input type="submit" value="update" class="formButton input">
     </form>
 
    <script src="{{url_for('static',filename='js/profile.js')}}"></script>
