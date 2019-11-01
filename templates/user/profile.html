@@ -2,19 +2,22 @@
 <head>
     <title>{{user.username}}</title>
     <link href="{{url_for('static',filename='css/profile.css')}}" rel="stylesheet"/>
-    <script script="{{url_for('static',filename='js/profile.js')}}"></script>
 </head>
 
 <body>
 
-    <form id="profile">
+    <form id="profile" action="{{url_for('user.profile')}}" method="post" enctype="multipart/form-data">
 
-        <img src="{{url_for('static',filename='imgs/' + user.pic)}}" id="profileImg">
+        <img src="{{url_for('static',filename=user.pic)}}" id="profileImg">
+        <input type="file" id="fileInput" style="display:none;" name="profileImg">
+
         <div> <span>hello</span> <input  name="username" value={{user.username}}> </div>
 
-        <div> <span>email</span> <input name="email" value={{user.email}}>
-        </div>
-
+        <div> <span>email</span> <input name="email" value={{user.email}}> </div>
+        <input type="submit" value="edit" id="button">
     </form>
+
+   <script src="{{url_for('static',filename='js/profile.js')}}"></script>
+
 
 </body>
