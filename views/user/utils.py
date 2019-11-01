@@ -2,12 +2,23 @@ import os
 
 from config import Config
 
+def _saveUserPic(user,pic):
+    '''
+    returns path of the saved pic
+    '''
+    profilePicPath = os.path.join(Config.UPLOAD_FOLDER,user.email + pic.filename)
+    pic.save(os.path.join("static",profilePicPath))
+    return profilePicPath
+
 
 def _updateUserPic(user,pic):
-    if user.pic != pic:
+    '''
+    returns true if pic has been updated otherwise false
+    '''
+    if pic and user.pic != pic:
         if user.pic != Config.DEFAULT_USER_PIC_LOCATIONS:
             os.remove(os.path.join("static",user.pic))
-        user.pic = pic
+        user.pic = _saveUserPic(user,pic)
         return True
     return False
 
