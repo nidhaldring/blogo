@@ -4,6 +4,7 @@ from flask import render_template,request,url_for,redirect
 
 from views.user import bp
 from views.auth.utils import loginRequired,getCurrentUser
+from views.user.utils import updateUser
 from config import Config
 
 
@@ -11,19 +12,13 @@ from config import Config
 @loginRequired
 def profile():
     if request.method == "POST":
+        user = getCurrentUser()
         username = request.form["username"]
         email = request.form["email"]
-        profileImg = request.files["profileImg"]
+        password = request.form["password"]
+        pic = request.files["profileImg"]
 
-        u = getCurrentUser()
-
-        profileImgPath = os.path.join(Config.UPLOAD_FOLDER,u.email + profileImg.filename)
-        profileImg.save(os.path.join("static",profileImgPath))
-
-        u.email = email
-        u.username = username
-        u.pic = profileImgPath
-        u.insert()
+        updateUser(user,username=username,email=email,password=password,pic=pic)
 
         return redirect(url_for(".profile"))
 
