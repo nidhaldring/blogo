@@ -17,6 +17,12 @@
     display: block;
     margin: 10px;
     margin-left: 45px;
+    width: 128px;
+    height: auto;
+}
+
+#profile img:hover{
+    cursor: pointer;
 }
 
 #profile div{
@@ -29,6 +35,8 @@
 }
 
 
-#profile input{
-
+#profile #button{
+    display: block;
+    width: 50px;
+    margin: auto;
 }
