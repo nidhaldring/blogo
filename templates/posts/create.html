@@ -1,8 +1,18 @@
 
 
-<form method="POST" action="{{url_for('posts.create')}}">
-	
-	title:<input type="text" name="title"> <br/>
-	body:<textarea name="body" rows="30" cols="30"></textarea> <br/>
-	<input type="submit" name="save">
-</form>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/create.css')}}">
+	<title>Blogo | Create a post</title>
+</head>
+
+
+<body>
+
+	<form method="POST" action="{{url_for('posts.create')}}" class="form">
+
+		<input type="text" name="title" class="input" placeholder="title">
+		<textarea name="body" rows="30" cols="30" class="input textarea" placeholder="body"></textarea>
+		<input type="submit" name="save" class="formButton input">
+	</form>
+
+</body>
