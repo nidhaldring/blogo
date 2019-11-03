@@ -1,12 +1,11 @@
 
-from flask import request,render_template,redirect,url_for,flash
+from flask import request,render_template,redirect,url_for,flash,session
 from werkzeug import check_password_hash
 from sqlalchemy import exc
 
 from views.auth import bp
 from models.user import User
 from views.auth.utils import *
-
 
 
 @bp.route("/register",methods=["POST","GET"])
@@ -41,6 +40,10 @@ def login():
 		return redirect(url_for("home.index"))
 
 	if request.method == "POST":
+		next = session["next"]
+		session.pop("next")
+
+		# get user infos
 		email = request.form["email"]
 		password = request.form["password"]
 
@@ -56,8 +59,9 @@ def login():
 
 		loginUser(user)
 		flash(f"welcome {user.username} !")
-		return redirect(url_for("home.index"))
+		return redirect(next) if next else redirect(url_for("home.index"))
 
+	session["next"] = request.args.get("next")
 	return render_template("auth/login.html")
 
 
