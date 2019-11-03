@@ -62,3 +62,12 @@ body{
     cursor: pointer;
     box-shadow: 0 0 10px 5px black;
 }
+
+.error{
+    display: block;
+    color: red;
+    font-size: 13px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: capitalize;
+}
