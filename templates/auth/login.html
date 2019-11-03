@@ -15,11 +15,9 @@
 		<p>not registred ! <a href="{{url_for('auth.register')}}">create an account ?</a></p>
 
 		{% with messages = get_flashed_messages() %}
-			{% if messages %}
-				{% for msg in messages %}
-					<span class="error"> {{msg}}</span>
-				{% endfor %}
-			{% endif %}
+			{% for msg in messages %}
+				<span class="error">{{msg}}</span>
+			{% endfor %}
 		{% endwith %}
 
 	</form>
