@@ -1,8 +1,7 @@
 
 from functools import wraps
 
-from flask import session,abort
-
+from flask import session,redirect,url_for
 from models.user import User
 
 
@@ -31,6 +30,6 @@ def loginRequired(view):
 	@wraps(view)
 	def decorator(*args,**kargs):
 		if getCurrentUser() is None:
-			abort(401) # unathorized
+			return redirect(url_for("auth.login"))
 		return view(*args,**kargs)
 	return decorator
