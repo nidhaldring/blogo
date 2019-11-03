@@ -20,7 +20,7 @@ def profile():
         pic = request.files["profileImg"]
 
         if not extensionIsAllowed(pic):
-            flash(f"the allowed extensions are {' , '.join(Config.ALLOWED_EXTENSIONS)}")
+            flash(f"the allowed extensions are {' , '.join(Config.ALLOWED_EXTENSIONS)} !")
             return redirect(url_for(".profile"))
 
         updateUser(user,username=username,email=email,password=password,pic=pic)
