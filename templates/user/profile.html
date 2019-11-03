@@ -18,6 +18,12 @@
 
         <input name="password" type="password" placeholder="*****" class="input">
         <input type="submit" value="update" class="formButton input">
+        {% with messages = get_flashed_messages() %}
+			{% for msg in messages %}
+				<span class="error">{{msg}}</span>
+			{% endfor %}
+		{% endwith %}
+
     </form>
 
    <script src="{{url_for('static',filename='js/profile.js')}}"></script>
