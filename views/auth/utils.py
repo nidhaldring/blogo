@@ -1,7 +1,7 @@
 
 from functools import wraps
 
-from flask import session,redirect,url_for
+from flask import session,redirect,url_for,flash,request
 from models.user import User
 
 
@@ -30,6 +30,7 @@ def loginRequired(view):
 	@wraps(view)
 	def decorator(*args,**kargs):
 		if getCurrentUser() is None:
-			return redirect(url_for("auth.login"))
+			flash("you need to login to acess this page !")
+			return redirect(url_for("auth.login",next=request.path))
 		return view(*args,**kargs)
 	return decorator
