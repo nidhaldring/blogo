@@ -43,3 +43,8 @@ def updateUser(user,*,username,email,password,pic):
 
     if change:
         user.insert()
+
+
+def extensionIsAllowed(pic):
+    ext = pic.filename[pic.filename.rfind(".") + 1:]
+    return ext in Config.ALLOWED_EXTENSIONS
